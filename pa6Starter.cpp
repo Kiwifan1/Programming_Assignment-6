@@ -1,15 +1,16 @@
-/**
- * Name: Joshua Venable
- * Class: CPSC 122, Fall 2021
- * Date: 11/19/2021
- * Programming Assigment: PA6
- * Description: Player battle that focuses on recursion, Linked Lists, ADTs, and Inheritance
- * Notes: 
- * 
- * 11/9/21 - file creation
- **/
+/*
+	CPSC 122
+	PA6 - Players Starter Code
+	You should NOT be submitting a file named "pa6Starter.cpp"
+	Please use this as a starting point.
+	Cite all sources used.
+*/
 
-#include "header.h"
+
+
+using namespace std;
+
+
 
 int main(void)
 {
@@ -54,3 +55,20 @@ int main(void)
 	return 0;
 }
 
+/*
+*  //TODO: your comment block
+*  This function accepts two template objects
+*  p1 is the attacking player, p2 is the playe receiving the attack
+*  p1 is by reference and modifyable, p2 is a constant reference
+*  This function determines whether a hit (p1 > p2) was successful
+*  and returns true on a successful hit
+*  if p1 is successful, they gain experience
+*  hit% is dependent on the type of subclass for each class
+*  e.g., InheritedClass1 might hit 60% of the time while
+*  InheritedClass2 might hit 10% of the time
+*/
+template<class T1, class T2>
+bool Player::attackPlayerSuccess(T1& p1, const T2& p2)
+{
+	return false;
+}
