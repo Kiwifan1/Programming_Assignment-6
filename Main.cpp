@@ -6,7 +6,7 @@
  * Description: Player battle that focuses on recursion, Linked Lists, ADTs, and Inheritance
  * Notes: 
  * 
- * 11/9/21 - file creation
+ * 11/19/21 - file creation
  **/
 
 #include "header.h"
