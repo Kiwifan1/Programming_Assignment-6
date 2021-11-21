@@ -9,6 +9,7 @@
  * 11/19/21 - file creation
  * 11/19/21 - all methods for Player doubly linked list created
  * 11/21/21 - creating constructors, destructors, and virtual methods for inherited classes
+ * 11/21/21 - all of player methods finished
  **/
 
 #include "header.h"
@@ -224,8 +225,13 @@ int PlayerInventory::size(void)
  **/
 int Player::generatePlayerId() const
 {
-    int randNum;
-    randNum = (rand() % MAX_ID_VALUE) + 1; //random number between 1 and MAX_ID_VALUE inclusive
+    int randNum = 0;
+    bool flag = true;
+    while(playerIdIsInList(randNum) || flag)
+    {
+        randNum = (rand() % MAX_ID_VALUE) + 1; //random number between 1 and MAX_ID_VALUE inclusive
+        flag = false;
+    }
     playerIds.push_back(randNum);
     return (randNum);
 }
@@ -260,9 +266,9 @@ int Player::generateRandomStat(int min, int max) const
  **/
 bool Player::playerIdIsInList(int id)
 {
-    for(int i = 0; i < playerIds.size(); i++)
+    for (int i = 0; i < playerIds.size(); i++)
     {
-        if(playerIds.at(i) == id)
+        if (playerIds.at(i) == id)
         {
             return true;
         }
@@ -270,13 +276,57 @@ bool Player::playerIdIsInList(int id)
     return false;
 }
 
+/**
+ * Name: Joshua Venable
+ * Date created: 11/21/21
+ * Date last modified: 11/21/21
+ * Description: prints out the battle card for the players per turn
+ * @param p1 the first player
+ * @param p2 the second player
+ * @param turn the turn it is as an int
+ * @return nothing
+ * @pre nothing printed out
+ * @post both players data printed out to console
+ **/
+template <class T1, class T2>
+void Player::printBattleCard(T1 p1, T2 p2, int turn)
+{
+}
+
+/**
+ * Name: Joshua Venable
+ * Date created: 11/21/21
+ * Date last modified: 11/21/21
+ * Description: determines whether a hit is successful 
+ * @param p1 the first player given as reference
+ * @param p2 the second player given as a const reference
+ * @return true or false whether or not there was a successful hit
+ * @pre two players ready to hit each other
+ * @post one player may have hitten another
+ **/
+/*
+*  //TODO: your comment block
+*  This function accepts two template objects
+*  p1 is the attacking player, p2 is the player receiving the attack
+*  p1 is by reference and modifyable, p2 is a constant reference
+*  This function determines whether a hit (p1 > p2) was successful
+*  and returns true on a successful hit
+*  if p1 is successful, they gain experience
+*  hit% is dependent on the type of subclass for each class
+*  e.g., InheritedClass1 might hit 60% of the time while
+*  InheritedClass2 might hit 10% of the time
+*/
+template <class T1, class T2>
+bool Player::attackPlayerSuccess(T1 &p1, const T2 &p2)
+{
+}
 
 //-----------------------------ROGUE FUNCTIONS----------------------------------------
 
 Rogue::Rogue() : Player()
 {
     subclass = "Rogue";
-    critChance = .30;
+    critChance = -1;
 }
 
 Rogue::~Rogue()
@@ -297,8 +347,9 @@ Rogue::~Rogue()
 void Rogue::initializePlayer(string newName)
 {
     this->name = newName;
+    this->critChance = generateRandomStat(1, 30);
     this->playerId = generatePlayerId();
-    this->health = 75;
+    this->health = generateRandomStat(50, 100);
     this->experience = 0;
 }
 
@@ -307,7 +358,7 @@ void Rogue::initializePlayer(string newName)
 Ninja::Ninja() : Rogue()
 {
     specialty = "Ninja";
-    sneakyDamage = .40;
+    sneakyDamage = -1;
 }
 
 Ninja::~Ninja()
@@ -325,11 +376,13 @@ Ninja::~Ninja()
  * @pre uninitialized ninja player
  * @post initialized ninja player
  **/
-void Rogue::initializePlayer(string newName)
+void Ninja::initializePlayer(string newName)
 {
     this->name = newName;
     this->playerId = generatePlayerId();
-    this->health = 75;
+    this->health = generateRandomStat(40, 90);
+    this->critChance = generateRandomStat(10, 45);
+    this->sneakyDamage = generateRandomStat(1, 8);
     this->experience = 0;
 }
 

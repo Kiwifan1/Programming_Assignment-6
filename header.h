@@ -145,10 +145,7 @@ public:
 
     //Virtual Functions
     virtual double getMultiplier(void) { return multiplier; }
-    const
-
-        virtual void
-        printPlayerInfo(void) final
+    const virtual void printPlayerInfo(void) final
     {
         string skull = "\n    _____\n   /     \\\n  | () () |\n   \\  ^  /\n    |||||\n";
         string tombstone = "\n       ,-=-.\n      /  +  \\\n      | ~~~ |\n      |R.I.P|\n      |_____| \n";
@@ -202,25 +199,5 @@ public:
     void printPlayerClassInfo(void) const;
 };
 //don't forget about static variables.
-
-/*
-*  //TODO: your comment block
-*  This function accepts two template objects
-*  p1 is the attacking player, p2 is the player receiving the attack
-*  p1 is by reference and modifyable, p2 is a constant reference
-*  This function determines whether a hit (p1 > p2) was successful
-*  and returns true on a successful hit
-*  if p1 is successful, they gain experience
-*  hit% is dependent on the type of subclass for each class
-*  e.g., InheritedClass1 might hit 60% of the time while
-*  InheritedClass2 might hit 10% of the time
-*/
-template <class T1, class T2>
-bool Player::attackPlayerSuccess(T1 &p1, const T2 &p2)
-{
-    return false;
-}
-
-int randomPlayerId(void);
 
 #endif
