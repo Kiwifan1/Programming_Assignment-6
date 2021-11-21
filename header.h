@@ -7,6 +7,7 @@
  * Notes: 
  * 
  * 11/19/21 - file creation
+ * 11/21/21 - creating inherited classes and special variables
  **/
 
 #ifndef HEADER_H
@@ -175,31 +176,37 @@ public:
     bool attackPlayerSuccess(T1 &p1, const T2 &p2);
 };
 
-class Rogue : Player
+class Rogue : public Player
 {
-private:
-    double critChance;
+protected:
+    string specialty;
+    double critChance; //critical hit chance
 
 public:
-    Rogue() {}
-    ~Rogue() {}
+    Rogue();
+    ~Rogue();
+
+    void initializePlayer(string newName);
+    void printPlayerClassInfo(void) const;
 };
 
-class Ninja : Rogue
+class Ninja : public Rogue
 {
-private:
-    double damageMultiplier = 2.0;
-
+protected:
+    double sneakyDamage; //multiplier for multiplier
 public:
-    Ninja() {}
-    ~Ninja() {}
+    Ninja();
+    ~Ninja();
+
+    void initializePlayer(string newName);
+    void printPlayerClassInfo(void) const;
 };
 //don't forget about static variables.
 
 /*
 *  //TODO: your comment block
 *  This function accepts two template objects
-*  p1 is the attacking player, p2 is the playe receiving the attack
+*  p1 is the attacking player, p2 is the player receiving the attack
 *  p1 is by reference and modifyable, p2 is a constant reference
 *  This function determines whether a hit (p1 > p2) was successful
 *  and returns true on a successful hit
@@ -213,5 +220,7 @@ bool Player::attackPlayerSuccess(T1 &p1, const T2 &p2)
 {
     return false;
 }
+
+int randomPlayerId(void);
 
 #endif

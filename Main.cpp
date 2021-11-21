@@ -10,9 +10,6 @@
  **/
 
 #include "header.h"
-
-int main(void)
-{
 	//Recall, since Player is an Abstract Base Class, you cannot declare a Player variable.
 	//You must declare instances of your derived classes.
 
@@ -50,7 +47,10 @@ int main(void)
 	// hits should grant experience to the attacking player
 	//when one player health drops to 0 or lower, the 'game' ends.
 	//display a message indicating the winner and display the ending player info
-
+int main(void)
+{
+	srand(1);
+	
 	return 0;
 }
 

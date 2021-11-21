@@ -8,9 +8,12 @@
  * 
  * 11/19/21 - file creation
  * 11/19/21 - all methods for Player doubly linked list created
+ * 11/21/21 - creating constructors, destructors, and virtual methods for inherited classes
  **/
 
 #include "header.h"
+
+//-----------------------------PLAYERINVENTORY FUNCTIONS-----------------------------
 
 /**
  * Name: Joshua Venable
@@ -146,7 +149,7 @@ bool PlayerInventory::removeItem(string nameOfInventoryItem)
 void PlayerInventory::displayAllItems(PlayerInventoryData *inventoryData) const
 {
     //ending condition for recursion
-    if(inventoryData == nullptr)
+    if (inventoryData == nullptr)
     {
         return;
     }
@@ -208,3 +211,126 @@ int PlayerInventory::size(void)
     }
     return length;
 }
+//-----------------------------PLAYER FUNCTIONS---------------------------------------
+
+/**
+ * Name: Joshua Venable
+ * Date created: 11/19/21
+ * Date last modified: 11/19/21
+ * Description: Gets a random number from 1 to MAX_ID_VALUE
+ * @return the random number as an integer
+ * @pre an unchosen random number
+ * @post a randomly chosen number generated from srand(1)
+ **/
+int Player::generatePlayerId() const
+{
+    int randNum;
+    randNum = (rand() % MAX_ID_VALUE) + 1; //random number between 1 and MAX_ID_VALUE inclusive
+    playerIds.push_back(randNum);
+    return (randNum);
+}
+
+/**
+ * Name: Joshua Venable
+ * Date created: 11/21/21
+ * Date last modified: 11/21/21
+ * Description: Generates random stats for a player given a min and max number
+ * @param min the minimum a value can be
+ * @param max the maximum a value can be
+ * @return the number that was generated
+ * @pre an unknown stat value
+ * @post a known and returned stat value
+ **/
+int Player::generateRandomStat(int min, int max) const
+{
+    int randStat;
+    randStat = (rand() % max) + min;
+    return randStat;
+}
+
+/**
+ * Name: Joshua Venable
+ * Date created: 11/21/21
+ * Date last modified: 11/21/21
+ * Description: checks whether an id is in the list of pre-existing ids
+ * @param id the integer to check for
+ * @return true or false regarding if id is in the vector
+ * @pre unknown whether id is in the vector
+ * @post known whether id is in the vector
+ **/
+bool Player::playerIdIsInList(int id)
+{
+    for(int i = 0; i < playerIds.size(); i++)
+    {
+        if(playerIds.at(i) == id)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+//-----------------------------ROGUE FUNCTIONS----------------------------------------
+
+Rogue::Rogue() : Player()
+{
+    subclass = "Rogue";
+    critChance = .30;
+}
+
+Rogue::~Rogue()
+{
+    playerInventory.erase();
+}
+
+/**
+ * Name: Joshua Venable
+ * Date created: 11/21/21
+ * Date last modified: 11/21/21
+ * Description: initializes data of rogue player
+ * @param newName the string going to be set to the Rogues name
+ * @return nothing
+ * @pre an uninitialized rogue player
+ * @post an initialized rogue player
+ **/
+void Rogue::initializePlayer(string newName)
+{
+    this->name = newName;
+    this->playerId = generatePlayerId();
+    this->health = 75;
+    this->experience = 0;
+}
+
+//-----------------------------NINJA FUNCTIONS----------------------------------------
+
+Ninja::Ninja() : Rogue()
+{
+    specialty = "Ninja";
+    sneakyDamage = .40;
+}
+
+Ninja::~Ninja()
+{
+    playerInventory.erase();
+}
+
+/**
+ * Name: Joshua Venable
+ * Date created: 11/21/21
+ * Date last modified: 11/21/21
+ * Description: initializes data of ninja, rogue player
+ * @param newName string going to be set to Ninjas name
+ * @return nothing
+ * @pre uninitialized ninja player
+ * @post initialized ninja player
+ **/
+void Rogue::initializePlayer(string newName)
+{
+    this->name = newName;
+    this->playerId = generatePlayerId();
+    this->health = 75;
+    this->experience = 0;
+}
+
+//-----------------------------MAIN FUNCTIONS-----------------------------------------
