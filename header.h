@@ -5,6 +5,7 @@
  * Programming Assigment: PA6
  * Description: Player battle that focuses on recursion, Linked Lists, ADTs, and Inheritance
  * Notes: 
+ *  Questions:  Can I include things like 'stagger' where there's a chance the other player cannot attack, and so the turn ends?
  * 
  * 11/19/21 - file creation
  * 11/21/21 - creating inherited classes and special variables
