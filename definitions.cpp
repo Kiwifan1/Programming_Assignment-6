@@ -11,6 +11,7 @@
  * 11/19/21 - all methods for Player doubly linked list created
  * 11/21/21 - creating constructors, destructors, and virtual methods for inherited classes
  * 11/21/21 - all of player methods finished
+ * 11/29/21 - added helping methods, overloaded some insert ones, and added things for filling lists and removing them
  **/
 
 #include "header.h"
@@ -79,6 +80,28 @@ bool PlayerInventory::insertAtPosition(PlayerInventoryData *newInventoryData, in
 
 /**
  * Name: Joshua Venable
+ * Date created: 11/29/21
+ * Date last modified: 11/29/21
+ * Description: Creates a PlayerInventoryData node and adds it to the end
+ * @param weaponName the name of the weapon as a string
+ * @param damage the damage the weapon does
+ * @param index the index to add the item to
+ * @return whether it could add to inventory
+ * @pre unmade node
+ * @post created node that has been added to inventory at specified index
+ **/
+bool PlayerInventory::insertAtPosition(string weaponName, int damage, int index)
+{
+    PlayerInventoryData *newNodePtr;
+    newNodePtr->damage = damage;
+    newNodePtr->weaponName = weaponName;
+    newNodePtr->prevSlot = nullptr;
+    newNodePtr->nextSlot = nullptr;
+    return insertAtPosition(newNodePtr, index);
+}
+
+/**
+ * Name: Joshua Venable
  * Date created: 11/19/21
  * Date last modified: 11/19/21
  * Description: adds an item to the end of the doubly linked list
@@ -90,6 +113,27 @@ bool PlayerInventory::insertAtPosition(PlayerInventoryData *newInventoryData, in
 bool PlayerInventory::insertAtEnd(PlayerInventoryData *newInventoryData)
 {
     return insertAtPosition(newInventoryData, length - 1);
+}
+
+/**
+ * Name: Joshua Venable
+ * Date created: 11/29/21
+ * Date last modified: 11/29/21
+ * Description: Creates a PlayerInventoryData node and adds it to the end
+ * @param weaponName the name of the weapon as a string
+ * @param damage the damage the weapon does
+ * @return whether it could add to inventory
+ * @pre unmade node
+ * @post created node that has been added to inventory
+ **/
+bool PlayerInventory::insertAtEnd(string weaponName, int damage)
+{
+    PlayerInventoryData *newNodePtr;
+    newNodePtr->damage = damage;
+    newNodePtr->weaponName = weaponName;
+    newNodePtr->prevSlot = nullptr;
+    newNodePtr->nextSlot = nullptr;
+    return insertAtEnd(newNodePtr);
 }
 
 /**
@@ -166,6 +210,68 @@ void PlayerInventory::displayAllItems(PlayerInventoryData *inventoryData) const
 
 /**
  * Name: Joshua Venable
+ * Date created: 11/29/21
+ * Date last modified: 11/29/21
+ * Description: Displays all items in the linkedList starting at the given position
+ * @param index the index to start at
+ * @return nothing
+ * @pre unprinted out items in list
+ * @post printed out items in list
+ **/
+void PlayerInventory::displayItemsFromPosition(int index) const
+{
+    int count = 0;
+    PlayerInventoryData *nodePtr = headPtr;
+
+    //if the index is out of bounds then don't run
+    if(index >= length || index < 0)
+    {
+        cout << "this is out of bounds!\n";
+        return;
+    }
+    //else reach the position in the list to start at
+    else
+    {
+        while(count < index)
+        {
+            nodePtr = nodePtr->nextSlot;
+            count++;
+        }
+        displayAllItems(nodePtr);
+    }
+}
+
+/**
+ * Name: Joshua Venable
+ * Date created: 11/29/21
+ * Date last modified: 11/29/21
+ * Description: gets the item in the inventory at specified index
+ * @param index the index the item to be grabbed
+ * @return the string name of the item
+ * @pre an unknown item at an index
+ * @post a known item at an index
+ **/
+string PlayerInventory::getItemName(int index)
+{
+    int count = 0;
+    PlayerInventoryData *nodePtr = headPtr;
+    if(index < 0 || index > this->length)
+    {
+        cout << "index out of bounds!\n";
+        return "";
+    }
+    else
+    {
+        while(count < index)
+        {
+            nodePtr = nodePtr->nextSlot;
+        }
+        return nodePtr->weaponName;
+    }
+}
+
+/**
+ * Name: Joshua Venable
  * Date created: 11/19/21
  * Date last modified: 11/19/21
  * Description: erases all of the inventory data
@@ -213,6 +319,11 @@ int PlayerInventory::size(void)
     }
     return length;
 }
+
+PlayerInventory::~PlayerInventory()
+{
+    erase();
+}
 //-----------------------------PLAYER FUNCTIONS---------------------------------------
 
 /**
@@ -228,7 +339,7 @@ int Player::generatePlayerId() const
 {
     int randNum = 0;
     bool flag = true;
-    while(playerIdIsInList(randNum) || flag)
+    while (playerIdIsInList(randNum) || flag)
     {
         randNum = (rand() % MAX_ID_VALUE) + 1; //random number between 1 and MAX_ID_VALUE inclusive
         flag = false;
@@ -257,8 +368,48 @@ int Player::generateRandomStat(int min, int max) const
 
 /**
  * Name: Joshua Venable
+ * Date created: 11/29/21
+ * Date last modified: 11/29/21
+ * Description: Fills up the inventory with random items from the global vector
+ * @param numItems the number of items to be put into the list
+ * @return whether it was able to fill up the list
+ * @pre empty linked list
+ * @post filled linked list
+ **/
+bool Player::fillList(int numItems)
+{
+    int randIndex = 0;
+    string weaponName;
+    int damage;
+
+    for (int i = 0; i < numItems; i++)
+    {
+        randIndex = generateRandomStat(0, possibleItems.size() - 1);
+        weaponName = possibleItems.at(randIndex).weaponName;
+        damage = possibleItems.at(randIndex).damage;
+        this->playerInventory.insertAtEnd(weaponName, damage);
+    }
+    return false;
+}
+
+/**
+ * Name: Joshua Venable
+ * Date created: 11/29/21
+ * Date last modified: 11/29/21
+ * Description: displays all of the player's inventory data
+ * @return nothing
+ * @pre unprinted inventory data
+ * @post printed to console inventory data
+ **/
+void Player::showAllItems(void) const
+{
+    this->playerInventory.displayAllItems(0); //displays starting at 0
+}
+
+/**
+ * Name: Joshua Venable
  * Date created: 11/21/21
- * Date last modified: 11/21/21
+ * Date last modified: 11/29/21
  * Description: checks whether an id is in the list of pre-existing ids
  * @param id the integer to check for
  * @return true or false regarding if id is in the vector
@@ -267,13 +418,14 @@ int Player::generateRandomStat(int min, int max) const
  **/
 bool Player::playerIdIsInList(int id)
 {
-    for (int i = 0; i < playerIds.size(); i++)
+    for (int i = 0; i < playerIds.size(); i ++)
     {
         if (playerIds.at(i) == id)
         {
             return true;
         }
     }
+
     return false;
 }
 
@@ -320,6 +472,12 @@ void Player::printBattleCard(T1 p1, T2 p2, int turn)
 template <class T1, class T2>
 bool Player::attackPlayerSuccess(T1 &p1, const T2 &p2)
 {
+    return false;
+}
+
+Player::~Player()
+{
+    playerInventory.erase();
 }
 
 //-----------------------------ROGUE FUNCTIONS----------------------------------------
@@ -354,6 +512,20 @@ void Rogue::initializePlayer(string newName)
     this->experience = 0;
 }
 
+/**
+ * Name: Joshua Venable
+ * Date created: 11/29/21
+ * Date last modified: 11/29/21
+ * Description: Prints out all of the players class info
+ * @return nothing
+ * @pre unprinted player info
+ * @post player info printed to console
+ **/
+void Rogue::printPlayerClassInfo(void) const
+{
+    cout << "Critical hit chance: " << this->critChance << "%\n";
+}
+
 //-----------------------------NINJA FUNCTIONS----------------------------------------
 
 Ninja::Ninja() : Rogue()
@@ -385,6 +557,23 @@ void Ninja::initializePlayer(string newName)
     this->critChance = generateRandomStat(10, 45);
     this->sneakyDamage = generateRandomStat(1, 8);
     this->experience = 0;
+}
+
+/**
+ * Name: Joshua Venable
+ * Date created: 11/29/21
+ * Date last modified: 11/29/21
+ * Description: Prints out all of the players class info
+ * @return nothing
+ * @pre unprinted player info
+ * @post player info printed to console
+ **/
+void Ninja::printPlayerClassInfo(void) const
+{
+    Rogue::printPlayerClassInfo();
+    cout << "Specialization: "
+         << "Ninja\n";
+    cout << "Sneak Extra Damage: " << this->sneakyDamage << endl;
 }
 
 //-----------------------------MAIN FUNCTIONS-----------------------------------------

@@ -9,6 +9,7 @@
  * 
  * 11/19/21 - file creation
  * 11/21/21 - creating inherited classes and special variables
+ * 11/29/21 - added multiple methods for all parent classes
  **/
 
 #ifndef HEADER_H
@@ -61,12 +62,16 @@ private:
     };
 
     PlayerInventoryData *headPtr;
-    int length; //length of double linked list
+    int length; //length of doubly linked list
 public:
     bool insertAtEnd(PlayerInventoryData *newInventoryData);
+    bool insertAtEnd(string weaponName, int damage);
     bool insertAtPosition(PlayerInventoryData *newInventoryData, int index);
+    bool insertAtPosition(string weaponName, int damage, int index);
     bool removeItem(string nameOfInventoryItem);
     void displayAllItems(PlayerInventoryData *inventoryData) const;
+    void displayItemsFromPosition(int index) const;
+    string getItemName(int index);
     bool erase(void);
     int size(void);
     PlayerInventory();
@@ -111,6 +116,8 @@ protected:
     //used in initialization
     int generatePlayerId(void) const;
 
+    bool fillList(int numItems);
+
 public:
     //Default constructor
     Player()
@@ -121,10 +128,8 @@ public:
         health = -1;
         experience = 0;
         multiplier = 1.0;
-
         numPlayers++;
-
-        //TODO: initialize PlayerInventory member (fill it with "weapons" from global constant vector)
+        fillList(11);
     }
 
     //Destructor
@@ -138,6 +143,8 @@ public:
     int getPlayerId(void) const { return playerId; }
     void setExperience(int exp) { experience = exp; }
     int getExperience(void) const { return experience; }
+    void showAllItems(void) const;
+    bool removeItem(string nameOfItem) { return this->playerInventory.removeItem(nameOfItem); }
 
     //Pure Virtual Functions
     //initializes a player of given name with randomly allocated stats

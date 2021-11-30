@@ -51,7 +51,23 @@
 int main(void)
 {
 	srand(1);
-	
+	Rogue player1 = Rogue();
+	Ninja player2 = Ninja();
+
+	cout << "Filled the linked list...\n";
+	player1.showAllItems();
+
+	cout << "Demonstrating Removing an item from the list...\n";
+
+	player1.removeItem(0);
+	player1.showAllItems();
+
+	cout << "Welcome to the battle arena!\n";
+	cout << "Today we will be seeing a battle between two Rogues!\n";
+	cout << "Our first participant is: \n";
+	player1.printPlayerInfo();
+	cout << "And our second participant is: \n";
+	player2.printPlayerInfo();
 	return 0;
 }
 
