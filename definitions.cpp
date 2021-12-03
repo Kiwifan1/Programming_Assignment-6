@@ -12,10 +12,14 @@
  * 11/21/21 - creating constructors, destructors, and virtual methods for inherited classes
  * 11/21/21 - all of player methods finished
  * 11/29/21 - added helping methods, overloaded some insert ones, and added things for filling lists and removing them
+ * 12/2/21 - added declaration of static variables, added methods for helping creation of node
  **/
 
 #include "header.h"
 
+int Player::numPlayers = 0;
+
+vector<int> Player::playerIds;
 //-----------------------------PLAYERINVENTORY FUNCTIONS-----------------------------
 
 /**
@@ -29,8 +33,6 @@
 PlayerInventory::PlayerInventory()
 {
     headPtr = nullptr;
-    headPtr->prevSlot = nullptr;
-    headPtr->nextSlot = nullptr;
     length = 0;
 }
 
@@ -49,7 +51,15 @@ bool PlayerInventory::insertAtPosition(PlayerInventoryData *newInventoryData, in
 {
     PlayerInventoryData *nodePtr = headPtr;
     PlayerInventoryData *prevNodePtr = nullptr;
-    int pos = 1;
+    int pos = 0;
+    if(headPtr == nullptr)
+    {
+        headPtr = newInventoryData;
+        headPtr->nextSlot = nullptr;
+        headPtr->prevSlot = nullptr;
+        length++;
+        return true;
+    }
     //while nodePtr isn't at the end and hasn't hit the index to put data in, increment
     while (nodePtr != nullptr && pos != index)
     {
@@ -92,12 +102,12 @@ bool PlayerInventory::insertAtPosition(PlayerInventoryData *newInventoryData, in
  **/
 bool PlayerInventory::insertAtPosition(string weaponName, int damage, int index)
 {
-    PlayerInventoryData *newNodePtr;
-    newNodePtr->damage = damage;
-    newNodePtr->weaponName = weaponName;
-    newNodePtr->prevSlot = nullptr;
-    newNodePtr->nextSlot = nullptr;
-    return insertAtPosition(newNodePtr, index);
+    PlayerInventoryData newNode;
+    newNode.damage = damage;
+    newNode.weaponName = weaponName;
+    newNode.prevSlot = nullptr;
+    newNode.nextSlot = nullptr;
+    return insertAtPosition(&newNode, index);
 }
 
 /**
@@ -112,7 +122,17 @@ bool PlayerInventory::insertAtPosition(string weaponName, int damage, int index)
  **/
 bool PlayerInventory::insertAtEnd(PlayerInventoryData *newInventoryData)
 {
-    return insertAtPosition(newInventoryData, length - 1);
+    return insertAtPosition(newInventoryData, length);
+}
+
+PlayerInventory::PlayerInventoryData* PlayerInventory::createNode(string weaponName, int damage)
+{
+    PlayerInventoryData *nodePtr = new PlayerInventoryData;
+    nodePtr->damage = damage;
+    nodePtr->weaponName = weaponName;
+    nodePtr->prevSlot = nullptr;
+    nodePtr->nextSlot = nullptr;
+    return nodePtr;
 }
 
 /**
@@ -128,11 +148,7 @@ bool PlayerInventory::insertAtEnd(PlayerInventoryData *newInventoryData)
  **/
 bool PlayerInventory::insertAtEnd(string weaponName, int damage)
 {
-    PlayerInventoryData *newNodePtr;
-    newNodePtr->damage = damage;
-    newNodePtr->weaponName = weaponName;
-    newNodePtr->prevSlot = nullptr;
-    newNodePtr->nextSlot = nullptr;
+    PlayerInventoryData *newNodePtr = createNode(weaponName, damage);
     return insertAtEnd(newNodePtr);
 }
 
@@ -510,6 +526,7 @@ void Rogue::initializePlayer(string newName)
     this->playerId = generatePlayerId();
     this->health = generateRandomStat(50, 100);
     this->experience = 0;
+    
 }
 
 /**

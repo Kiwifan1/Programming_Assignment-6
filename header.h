@@ -10,6 +10,7 @@
  * 11/19/21 - file creation
  * 11/21/21 - creating inherited classes and special variables
  * 11/29/21 - added multiple methods for all parent classes
+ * 12/2/21 - added method for node creation
  **/
 
 #ifndef HEADER_H
@@ -64,6 +65,7 @@ private:
     PlayerInventoryData *headPtr;
     int length; //length of doubly linked list
 public:
+    PlayerInventoryData* createNode(string weaponName, int damage);
     bool insertAtEnd(PlayerInventoryData *newInventoryData);
     bool insertAtEnd(string weaponName, int damage);
     bool insertAtPosition(PlayerInventoryData *newInventoryData, int index);
@@ -116,7 +118,6 @@ protected:
     //used in initialization
     int generatePlayerId(void) const;
 
-    bool fillList(int numItems);
 
 public:
     //Default constructor
@@ -128,8 +129,8 @@ public:
         health = -1;
         experience = 0;
         multiplier = 1.0;
+        PlayerInventory playerInventory;
         numPlayers++;
-        fillList(11);
     }
 
     //Destructor
@@ -145,6 +146,7 @@ public:
     int getExperience(void) const { return experience; }
     void showAllItems(void) const;
     bool removeItem(string nameOfItem) { return this->playerInventory.removeItem(nameOfItem); }
+    bool fillList(int numItems);
 
     //Pure Virtual Functions
     //initializes a player of given name with randomly allocated stats
@@ -186,6 +188,7 @@ class Rogue : public Player
 protected:
     string specialty;
     double critChance; //critical hit chance
+    PlayerInventory playerInventory;
 
 public:
     Rogue();
@@ -199,6 +202,7 @@ class Ninja : public Rogue
 {
 protected:
     double sneakyDamage; //multiplier for multiplier
+    PlayerInventory PlayerInventory;
 public:
     Ninja();
     ~Ninja();

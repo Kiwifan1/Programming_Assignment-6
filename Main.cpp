@@ -8,6 +8,7 @@
  * Questions:  Can I include things like 'stagger' where there's a chance the other player cannot attack, and so the turn ends?
  * 
  * 11/19/21 - file creation
+ * 12/2/21 - added methods to main for running program, fixed how list is filled.
  **/
 
 #include "header.h"
@@ -54,7 +55,14 @@ int main(void)
 	Rogue player1 = Rogue();
 	Ninja player2 = Ninja();
 
+	player1.initializePlayer("Jameson");
+	player2.initializePlayer("Colby");
+
+	player1.fillList(11);
+	player2.fillList(11);
+
 	cout << "Filled the linked list...\n";
+
 	player1.showAllItems();
 
 	cout << "Demonstrating Removing an item from the list...\n";
