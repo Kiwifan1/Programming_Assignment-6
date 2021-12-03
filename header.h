@@ -22,6 +22,7 @@
 #include <ctime>    //need for random
 #include <vector>   //need for vector data type
 #include <iomanip>  //need to format output
+#include <typeinfo> //for class checks
 
 using namespace std;
 

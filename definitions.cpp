@@ -341,8 +341,6 @@ string PlayerInventory::getItemName(int index)
     }
 }
 
-
-
 /**
  * Name: Joshua Venable
  * Date created: 11/19/21
@@ -546,6 +544,14 @@ void Player::printBattleCard(T1 p1, T2 p2, int turn)
 template <class T1, class T2>
 bool Player::attackPlayerSuccess(T1 &p1, const T2 &p2)
 {
+    double baseHitP1 = .50; //50% hit chance base
+    double baseHitP2 = .50; //50% hit chance base
+    double randNum = rand();
+    if(typeid(p2).name() == "Ninja")
+    {
+        return true;
+    }
+
     return false;
 }
 

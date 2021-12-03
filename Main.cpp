@@ -54,6 +54,7 @@ int main(void)
 	srand(1);
 	Rogue player1 = Rogue();
 	Ninja player2 = Ninja();
+	int turn = 0;
 
 	player1.initializePlayer("Jameson");
 	player2.initializePlayer("Colby");
@@ -77,7 +78,28 @@ int main(void)
 	cout << "And our second participant is: \n";
 	player2.printPlayerInfo();
 
-	
+	//while loop that makes them battle till one dies
+	while(player1.getHealth() > 0 && player2.getHealth() > 0)
+	{
+		//must include battling method here
+		player1.setHealth(0);
+	}
+	//if player 1 wins
+	if(player1.getHealth() > 0)
+	{
+		cout << endl << player1.getName() << " wins!" << endl;
+		cout << endl << "Ending Info:" << "\n\n";
+		player2.printPlayerInfo();
+		player1.printPlayerInfo();
+	}
+	//else if player 2 wins
+	else
+	{
+		cout << endl << player2.getName() << " wins!" << endl;
+		cout << endl << "Ending Info:" << "\n\n";
+		player1.printPlayerInfo();
+		player2.printPlayerInfo();
+	}
 
 	return 0;
 }
