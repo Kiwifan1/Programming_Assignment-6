@@ -67,7 +67,7 @@ int main(void)
 
 	cout << "Demonstrating Removing an item from the list...\n";
 
-	player1.removeItem(0);
+	player1.removeItem("Legendary sword");
 	player1.showAllItems();
 
 	cout << "Welcome to the battle arena!\n";
@@ -76,6 +76,9 @@ int main(void)
 	player1.printPlayerInfo();
 	cout << "And our second participant is: \n";
 	player2.printPlayerInfo();
+
+	
+
 	return 0;
 }
 

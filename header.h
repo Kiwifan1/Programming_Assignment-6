@@ -66,6 +66,7 @@ private:
     int length; //length of doubly linked list
 public:
     PlayerInventoryData* createNode(string weaponName, int damage);
+    PlayerInventoryData* getNode(int index) const;
     bool insertAtEnd(PlayerInventoryData *newInventoryData);
     bool insertAtEnd(string weaponName, int damage);
     bool insertAtPosition(PlayerInventoryData *newInventoryData, int index);

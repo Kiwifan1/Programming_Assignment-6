@@ -125,6 +125,18 @@ bool PlayerInventory::insertAtEnd(PlayerInventoryData *newInventoryData)
     return insertAtPosition(newInventoryData, length);
 }
 
+
+/**
+ * Name: Joshua Venable
+ * Date created: 12/2/21
+ * Date last modified: 12/2/21
+ * Description: Creates a node of weapon data
+ * @param weaponName the name of the weapon as a string
+ * @param damage the amount of damage as an integer
+ * @return A pointer to a new node
+ * @pre unmade node 
+ * @post made node pointer ready to be added
+ **/
 PlayerInventory::PlayerInventoryData* PlayerInventory::createNode(string weaponName, int damage)
 {
     PlayerInventoryData *nodePtr = new PlayerInventoryData;
@@ -133,6 +145,49 @@ PlayerInventory::PlayerInventoryData* PlayerInventory::createNode(string weaponN
     nodePtr->prevSlot = nullptr;
     nodePtr->nextSlot = nullptr;
     return nodePtr;
+}
+
+/**
+ * Name: Joshua Venable
+ * Date created: 12/2/21
+ * Date last modified: 12/2/21
+ * Description: Returns the node at a given index
+ * @param index the index to find the node at 
+ * @return the pointer node at the spot in the doubly linked list
+ * @pre unfound node in linked list
+ * @post found and returned node in linked list
+ **/
+PlayerInventory::PlayerInventoryData* PlayerInventory::getNode(int index) const
+{
+    PlayerInventoryData *nodePtr = headPtr;
+    int count = 0;
+
+    //if the linked list is empty
+    if(headPtr == nullptr || index < 0)
+    {
+        return nullptr;
+    }
+    //else look through linked list
+    else
+    {
+        //while there is stuff in the linked list or the index hasn't been reached
+        while(nodePtr != nullptr && count != index)
+        {
+            count++;
+            nodePtr = nodePtr->nextSlot;
+        }
+        //if item found
+        if(count == index)
+        {
+            return nodePtr;
+        }
+        //if end of linked list found
+        else if(nodePtr == nullptr)
+        {
+            return nullptr;
+        }
+    }
+    return nullptr;
 }
 
 /**
@@ -213,6 +268,7 @@ void PlayerInventory::displayAllItems(PlayerInventoryData *inventoryData) const
     //ending condition for recursion
     if (inventoryData == nullptr)
     {
+        cout << "Size: " << length << endl;
         return;
     }
     //recursive else statement
@@ -221,7 +277,6 @@ void PlayerInventory::displayAllItems(PlayerInventoryData *inventoryData) const
         cout << "Weapon: " << inventoryData->weaponName << " - damage: " << inventoryData->damage << endl;
         displayAllItems(inventoryData->nextSlot);
     }
-    cout << "Size: " << length << endl;
 }
 
 /**
@@ -285,6 +340,8 @@ string PlayerInventory::getItemName(int index)
         return nodePtr->weaponName;
     }
 }
+
+
 
 /**
  * Name: Joshua Venable
@@ -411,7 +468,7 @@ bool Player::fillList(int numItems)
 /**
  * Name: Joshua Venable
  * Date created: 11/29/21
- * Date last modified: 11/29/21
+ * Date last modified: 12/2/21
  * Description: displays all of the player's inventory data
  * @return nothing
  * @pre unprinted inventory data
@@ -419,7 +476,8 @@ bool Player::fillList(int numItems)
  **/
 void Player::showAllItems(void) const
 {
-    this->playerInventory.displayAllItems(0); //displays starting at 0
+    
+    this->playerInventory.displayAllItems(this->playerInventory.getNode(0)); //displays starting at beginning
 }
 
 /**
