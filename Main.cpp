@@ -61,8 +61,8 @@ int main(void)
 	player1.initializePlayer("Jameson");
 	player2.initializePlayer("Colby");
 
-	player1.fillList(10);
-	player2.fillList(10);
+	player1.fillList(5);
+	player2.fillList(5);
 
 	cout << "Filled the linked list...\n";
 
@@ -70,15 +70,16 @@ int main(void)
 
 	cout << "Demonstrating Removing an item from the list...\n";
 
-	player1.removeItem("Legendary sword");
+	player1.removeItem();
 	player1.showAllItems();
 
-	cout << "Welcome to the battle arena!\n";
+	cout << "\nWelcome to the battle arena!\n";
 	cout << "Today we will be seeing a battle between two Rogues!\n";
 	cout << "Our first participant is: \n";
 	player1.printPlayerInfo();
 	cout << "And our second participant is: \n";
 	player2.printPlayerInfo();
+	cout << "\nLet the battle commence! \n";
 
 	//while loop that makes them battle till one dies
 	while(player1.getHealth() > 0 && player2.getHealth() > 0)

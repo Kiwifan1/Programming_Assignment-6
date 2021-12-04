@@ -394,7 +394,7 @@ int PlayerInventory::size(void)
 
 PlayerInventory::~PlayerInventory()
 {
-    erase();
+    //no need to delete since other players destructors already do so
 }
 //-----------------------------PLAYER FUNCTIONS---------------------------------------
 
@@ -466,6 +466,20 @@ bool Player::fillList(int numItems)
         return true;
     }
     return false;
+}
+
+/**
+ * Name: Joshua Venable
+ * Date created: 12/4/21
+ * Date last modified: 12/4/21
+ * Description: removes the item in the inventory whose name matches
+ * @return whether an item was removed or not
+ * @pre a doubly linked list as is
+ * @post doubly linked list that either removed an item or didn't find it
+ **/
+bool Player::removeItem()
+{
+    return this->removeItem(this->playerInventory.getNode(0)->weaponName);
 }
 
 /**

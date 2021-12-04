@@ -149,6 +149,7 @@ public:
     int getExperience(void) const { return experience; }
     void showAllItems(void) const;
     bool removeItem(string nameOfItem) { return this->playerInventory.removeItem(nameOfItem); }
+    bool removeItem(void);
     bool fillList(int numItems);
 
     //Pure Virtual Functions
