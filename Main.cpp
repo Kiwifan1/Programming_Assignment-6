@@ -9,6 +9,7 @@
  * 
  * 11/19/21 - file creation
  * 12/2/21 - added methods to main for running program, fixed how list is filled.
+ * 12/3/21 - all functions and methods added, everything works except the inventory
  **/
 
 #include "header.h"
@@ -55,12 +56,13 @@ int main(void)
 	Rogue player1 = Rogue();
 	Ninja player2 = Ninja();
 	int turn = 0;
+	bool hit = false;
 
 	player1.initializePlayer("Jameson");
 	player2.initializePlayer("Colby");
 
-	player1.fillList(11);
-	player2.fillList(11);
+	player1.fillList(10);
+	player2.fillList(10);
 
 	cout << "Filled the linked list...\n";
 
@@ -82,7 +84,12 @@ int main(void)
 	while(player1.getHealth() > 0 && player2.getHealth() > 0)
 	{
 		//must include battling method here
-		player1.setHealth(0);
+		player1.printBattleCard(player1, player2, turn);
+		hit = player1.attackPlayerSuccess(player1, player2);
+		player1.hitPlayer(player1, player2, hit);
+		hit = player2.attackPlayerSuccess(player2, player1);
+		player2.hitPlayer(player2, player1, hit);
+		turn ++;
 	}
 	//if player 1 wins
 	if(player1.getHealth() > 0)

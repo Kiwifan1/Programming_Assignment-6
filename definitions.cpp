@@ -13,6 +13,7 @@
  * 11/21/21 - all of player methods finished
  * 11/29/21 - added helping methods, overloaded some insert ones, and added things for filling lists and removing them
  * 12/2/21 - added declaration of static variables, added methods for helping creation of node
+ * 12/3/21 - changed how some methos for battlescorecard worked
  **/
 
 #include "header.h"
@@ -460,6 +461,10 @@ bool Player::fillList(int numItems)
         damage = possibleItems.at(randIndex).damage;
         this->playerInventory.insertAtEnd(weaponName, damage);
     }
+    if(this->playerInventory.getNode(0) != nullptr)
+    {
+        return true;
+    }
     return false;
 }
 
@@ -501,63 +506,9 @@ bool Player::playerIdIsInList(int id)
     return false;
 }
 
-/**
- * Name: Joshua Venable
- * Date created: 11/21/21
- * Date last modified: 11/21/21
- * Description: prints out the battle card for the players per turn
- * @param p1 the first player
- * @param p2 the second player
- * @param turn the turn it is as an int
- * @return nothing
- * @pre nothing printed out
- * @post both players data printed out to console
- **/
-template <class T1, class T2>
-void Player::printBattleCard(T1 p1, T2 p2, int turn)
-{
-}
-
-/**
- * Name: Joshua Venable
- * Date created: 11/21/21
- * Date last modified: 11/21/21
- * Description: determines whether a hit is successful 
- * @param p1 the first player given as reference
- * @param p2 the second player given as a const reference
- * @return true or false whether or not there was a successful hit
- * @pre two players ready to hit each other
- * @post one player may have hitten another
- **/
-/*
-*  //TODO: your comment block
-*  This function accepts two template objects
-*  p1 is the attacking player, p2 is the player receiving the attack
-*  p1 is by reference and modifyable, p2 is a constant reference
-*  This function determines whether a hit (p1 > p2) was successful
-*  and returns true on a successful hit
-*  if p1 is successful, they gain experience
-*  hit% is dependent on the type of subclass for each class
-*  e.g., InheritedClass1 might hit 60% of the time while
-*  InheritedClass2 might hit 10% of the time
-*/
-template <class T1, class T2>
-bool Player::attackPlayerSuccess(T1 &p1, const T2 &p2)
-{
-    double baseHitP1 = .50; //50% hit chance base
-    double baseHitP2 = .50; //50% hit chance base
-    double randNum = rand();
-    if(typeid(p2).name() == "Ninja")
-    {
-        return true;
-    }
-
-    return false;
-}
-
 Player::~Player()
 {
-    playerInventory.erase();
+    this->playerInventory.erase();
 }
 
 //-----------------------------ROGUE FUNCTIONS----------------------------------------
@@ -570,7 +521,7 @@ Rogue::Rogue() : Player()
 
 Rogue::~Rogue()
 {
-    playerInventory.erase();
+    this->playerInventory.erase();
 }
 
 /**
@@ -617,7 +568,7 @@ Ninja::Ninja() : Rogue()
 
 Ninja::~Ninja()
 {
-    playerInventory.erase();
+    this->playerInventory.erase();
 }
 
 /**

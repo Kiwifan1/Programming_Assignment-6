@@ -11,6 +11,7 @@
  * 11/21/21 - creating inherited classes and special variables
  * 11/29/21 - added multiple methods for all parent classes
  * 12/2/21 - added method for node creation
+ * 12/3/21 - moved the template methods over to this file
  **/
 
 #ifndef HEADER_H
@@ -178,11 +179,14 @@ public:
     //prints out the "header" information for each attack turn
     //see example output
     template <class T1, class T2>
-    static void printBattleCard(T1 p1, T2 p2, int turn);
+    static void printBattleCard(T1 &p1, T2 &p2, int turn);
 
     //see example function definition below
     template <class T1, class T2>
     bool attackPlayerSuccess(T1 &p1, const T2 &p2);
+
+    template <class T1, class T2>
+    void hitPlayer(T1 &p1, T2 &p2, bool getsHit);
 };
 
 class Rogue : public Player
@@ -213,5 +217,97 @@ public:
     void printPlayerClassInfo(void) const;
 };
 //don't forget about static variables.
+
+/**
+ * Name: Joshua Venable
+ * Date created: 11/21/21
+ * Date last modified: 11/21/21
+ * Description: prints out the battle card for the players per turn
+ * @param p1 the first player
+ * @param p2 the second player
+ * @param turn the turn it is as an int
+ * @return nothing
+ * @pre nothing printed out
+ * @post both players data printed out to console
+ **/
+template <class T1, class T2>
+void Player::printBattleCard(T1 &p1, T2 &p2, int turn)
+{
+    cout << "|------- Turn " << turn << " -------|\n";
+    cout << p1.getName() << "'s Health: " << p1.getHealth() << " - " << p2.getName() << "'s Health: "
+        << p2.getHealth() << endl;
+}
+
+/**
+ * Name: Joshua Venable
+ * Date created: 11/21/21
+ * Date last modified: 11/21/21
+ * Description: determines whether a hit is successful 
+ * @param p1 the first player given as reference
+ * @param p2 the second player given as a const reference
+ * @return true or false whether or not there was a successful hit
+ * @pre two players ready to hit each other
+ * @post one player may have hitten another
+ **/
+/*
+*  //TODO: your comment block
+*  This function accepts two template objects
+*  p1 is the attacking player, p2 is the player receiving the attack
+*  p1 is by reference and modifyable, p2 is a constant reference
+*  This function determines whether a hit (p1 > p2) was successful
+*  and returns true on a successful hit
+*  if p1 is successful, they gain experience
+*  hit% is dependent on the type of subclass for each class
+*  e.g., InheritedClass1 might hit 60% of the time while
+*  InheritedClass2 might hit 10% of the time
+*/
+template <class T1, class T2>
+bool Player::attackPlayerSuccess(T1 &p1, const T2 &p2)
+{
+    int baseHit = 50; //50% hit chance base
+    int randNum = generateRandomStat(0,100);
+    string name = typeid(p2).name();
+    string name2 = typeid(p1).name();
+    if(name == "5Ninja")
+    {
+        baseHit = 30;
+    }
+    else if(name2 == "5Rogue")
+    {
+        baseHit = 40;
+    }
+    if(randNum < baseHit)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+/**
+ * Name: Joshua Venable
+ * Date created: 12/3/21
+ * Date last modified: 12/3/21
+ * Description: Modifies health and experience for p1 to hit p2
+ * @param p1 the player doing the hitting and getting xp
+ * @param p2 the player getting hit
+ * @return nothing
+ * @pre players about to battle
+ * @post one player has less health and the other has experience
+ **/
+template <class T1, class T2>
+void Player::hitPlayer(T1 &p1, T2 &p2, bool getsHit)
+{
+    int randIndex = generateRandomStat(0, this->playerInventory.size() - 1);
+    string randWeapon = this->playerInventory.getNode(randIndex)->weaponName;
+    int randWeaponDamage = this->playerInventory.getNode(randIndex)->damage;
+    p2.setHealth(p2.getHealth() - randWeaponDamage);
+    p1.setExperience(p1.getExperience() + (randWeaponDamage / 2));
+    cout << p1.getName() << " attacks " << p2.getName() << " with a(n) " << randWeapon 
+        << "! ...hits for " << randWeaponDamage << "!\n";
+} 
+
 
 #endif
