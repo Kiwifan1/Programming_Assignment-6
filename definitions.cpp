@@ -14,6 +14,7 @@
  * 11/29/21 - added helping methods, overloaded some insert ones, and added things for filling lists and removing them
  * 12/2/21 - added declaration of static variables, added methods for helping creation of node
  * 12/3/21 - changed how some methos for battlescorecard worked
+ * 12/4/21 - changed how destructors worked so it wouldn't pull error
  **/
 
 #include "header.h"
@@ -394,7 +395,7 @@ int PlayerInventory::size(void)
 
 PlayerInventory::~PlayerInventory()
 {
-    //no need to delete since other players destructors already do so
+    //no need to delete since other destructors call the erase() function
 }
 //-----------------------------PLAYER FUNCTIONS---------------------------------------
 

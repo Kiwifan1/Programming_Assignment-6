@@ -12,6 +12,7 @@
  * 11/29/21 - added multiple methods for all parent classes
  * 12/2/21 - added method for node creation
  * 12/3/21 - moved the template methods over to this file
+ * 12/4/21 - added helper methods for removing items
  **/
 
 #ifndef HEADER_H
@@ -24,6 +25,7 @@
 #include <vector>   //need for vector data type
 #include <iomanip>  //need to format output
 #include <typeinfo> //for class checks
+#include <time.h> //for random num generator
 
 using namespace std;
 
@@ -201,6 +203,8 @@ public:
     Rogue();
     ~Rogue();
 
+    double getCrit(void) { return critChance; }
+    double getSneakyDamage(void) { return 0; }
     void initializePlayer(string newName);
     void printPlayerClassInfo(void) const;
 };
@@ -214,6 +218,7 @@ public:
     Ninja();
     ~Ninja();
 
+    double getSneakyDamage(void) { return sneakyDamage; }
     void initializePlayer(string newName);
     void printPlayerClassInfo(void) const;
 };
@@ -302,12 +307,38 @@ template <class T1, class T2>
 void Player::hitPlayer(T1 &p1, T2 &p2, bool getsHit)
 {
     int randIndex = generateRandomStat(0, this->playerInventory.size() - 1);
+    int randNum = generateRandomStat(0,100);
     string randWeapon = this->playerInventory.getNode(randIndex)->weaponName;
     int randWeaponDamage = this->playerInventory.getNode(randIndex)->damage;
+    bool hitCrit = false;
+    bool sneakAttack = false;
+
+    if(randNum < p1.getCrit())
+    {
+        randWeaponDamage *= 2.0;
+        hitCrit = true;
+    }
+    if(typeid(p1).name() == "5Ninja")
+    {
+        randWeaponDamage += p1.getSneakyDamage();
+        sneakAttack = true;
+    }
     p2.setHealth(p2.getHealth() - randWeaponDamage);
     p1.setExperience(p1.getExperience() + (randWeaponDamage / 2));
     cout << p1.getName() << " attacks " << p2.getName() << " with a(n) " << randWeapon 
-        << "! ...hits for " << randWeaponDamage << "!\n";
+        << "! ...hits for " << randWeaponDamage << "!";
+    if(hitCrit)
+    {
+        cout << " ... It was a Critical Hit!\n";
+    }
+    if(sneakAttack)
+    {
+        cout << " ... It was a Sneak Attack!\n";
+    }
+    if(!hitCrit && !sneakAttack)
+    {
+        cout << endl;
+    }
 } 
 
 

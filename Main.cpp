@@ -10,6 +10,7 @@
  * 11/19/21 - file creation
  * 12/2/21 - added methods to main for running program, fixed how list is filled.
  * 12/3/21 - all functions and methods added, everything works except the inventory
+ * 12/4/21 - added code for filling list and for continuing the battle
  **/
 
 #include "header.h"
@@ -52,10 +53,11 @@
 	//display a message indicating the winner and display the ending player info
 int main(void)
 {
-	srand(1);
+
+	srand((unsigned) time(0));
 	Rogue player1 = Rogue();
 	Ninja player2 = Ninja();
-	int turn = 0;
+	int turn = 1;
 	bool hit = false;
 
 	player1.initializePlayer("Jameson");
